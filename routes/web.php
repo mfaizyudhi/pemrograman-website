@@ -3,14 +3,39 @@
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
-Route::get('/hello', function () {
-    return 'Hello World';
+Route::get('/p', function () {
+    return view('welcome');
+})->name('home');
+
+Route::get('/', function () {
+    return view('web.homepage');
+});
+
+Route::get('/products', function () {
+    return view('web.products');
+});
+
+Route::get('produk/{slug}', function ($slug) {
+    return view('web.single_products');
+});
+
+Route::get('/categories', function () {
+    return view('web.categories');
+});
+
+Route::get('categories/{slug}', function ($slug) {
+    return view('web.single_categories');
+});
+
+Route::get('/cart', function () {
+    return view('web.cart');
+});
+
+Route::get('/chekout', function () {
+    return view('web.checkout');
 });
 
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
