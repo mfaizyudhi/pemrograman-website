@@ -2,7 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
-use App\Http\Controllers\HomepageController; 
+use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\PostsController;
+use App\Http\Controllers\ProductController;
 
 Route::get('/p', function () {
     return view('welcome');
@@ -45,11 +49,18 @@ Route::get('checkout', [HomepageController::class, 'checkout']);
 //     return view('web.checkout');
 // });
 
+Route::group(['prefix'=>'dashboard'],function(){
+    Route::resource('posts', PostsController::class)->names('posts');
+})->middleware(['auth', 'verified']);
 
+Route::group(['prefix'=>'dashboard'], function(){
+    Route::get('/',[DashboardController::class,'index'])->name('dashboard');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+    Route::resource('categories',ProductCategoryController::class);
+    Route::resource('products', ProductController::class);
+
+})->middleware(['auth', 'verified']);
+
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
